@@ -90,7 +90,7 @@ router.post('/user',fetchuser, async (req, res) => {
     }
 });
 
-router.put('/update',fetchuser,[
+router.post('/update',fetchuser,[
     body("name", "Name is required and should be > 3 characters").isLength({min: 3}),
     body("age", "Age is required and should be greater than 18").notEmpty().isInt({min: 18})
 ], async(req,res) => {
@@ -122,7 +122,7 @@ router.put('/update',fetchuser,[
     }
 })
 
-router.delete('/delete',fetchuser, async(req,res) => {
+router.post('/delete',fetchuser, async(req,res) => {
     let success = false;
     try {
         let user = await userModel.findById(req.user.id);
@@ -138,6 +138,36 @@ router.delete('/delete',fetchuser, async(req,res) => {
         }
         success = true;
         res.json({success,message:"User Deleted"});
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({message:"Server Error"});
+    }
+})
+
+router.post('/updatepassword',fetchuser,async (req,res) => {
+    let success = false;
+    try {
+        let user = await userModel.findById(req.user.id);
+        if (!user) {
+            return res.status(400).json({success,errors: "User does not exist"});
+        }
+        if(user.id.toString() !== req.user.id) {
+            return res.status(401).json({success,errors: "Not Authorized"});
+        }
+        const passwordCompare = await bcrypt.compare(req.body.oldpassword, user.password);
+        if (!passwordCompare) {
+            return res.status(400).json({success,errors: "Invalid Credentials"});
+        }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.newpassword, salt);
+        user.password = hashedPassword;
+        const result = await user.save();
+        if (!result) {
+            return res.status(400).json({success,errors: "Error updating password"});
+        }
+        success = true;
+        res.json({success,message:"Password Updated"});
     }
     catch (error) {
         console.error(error);
