@@ -3,6 +3,7 @@ const userModel = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {body, validationResult} = require('express-validator');
+const fetchuser = require('../middleware/fetchuser');
 require('dotenv').config();
 
 router.post('/register', [
@@ -78,4 +79,14 @@ router.post('/login', [
     }
 });
 
+router.post('/user',fetchuser, async (req, res) => {
+    try {
+        const user = await userModel.findById(req.user.id).select("-password");
+        res.json(user);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({message:"Server Error"});
+    }
+});
 module.exports = router;
