@@ -89,4 +89,59 @@ router.post('/user',fetchuser, async (req, res) => {
         res.status(500).send({message:"Server Error"});
     }
 });
+
+router.put('/update',fetchuser,[
+    body("name", "Name is required and should be > 3 characters").isLength({min: 3}),
+    body("age", "Age is required and should be greater than 18").notEmpty().isInt({min: 18})
+], async(req,res) => {
+    const errors = validationResult(req);
+    let success = false;
+    if (!errors.isEmpty()) {
+        return res.status(400).json({success,errors: errors.array()});
+    }
+    try {
+        let user = await userModel.findById(req.user.id);
+        if (!user) {
+            return res.status(400).json({success,errors: "User does not exist"});
+        }
+        if(user.id.toString() !== req.user.id) {
+            return res.status(401).json({success,errors: "Not Authorized"});
+        }
+        user.name = req.body.name;
+        user.age = req.body.age;
+        const result = await user.save();
+        if (!result) {
+            return res.status(400).json({success,errors: "Error updating user"});
+        }
+        success = true;
+        res.json({success,message:"User Updated"});
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({message:"Server Error"});
+    }
+})
+
+router.delete('/delete',fetchuser, async(req,res) => {
+    let success = false;
+    try {
+        let user = await userModel.findById(req.user.id);
+        if (!user) {
+            return res.status(400).json({success,errors: "User does not exist"});
+        }
+        if(user.id.toString() !== req.user.id) {
+            return res.status(401).json({success,errors: "Not Authorized"});
+        }
+        const result = await userModel.findByIdAndDelete(req.user.id);
+        if (!result) {
+            return res.status(400).json({success,errors: "Error deleting user"});
+        }
+        success = true;
+        res.json({success,message:"User Deleted"});
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({message:"Server Error"});
+    }
+})
 module.exports = router;
