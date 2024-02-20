@@ -6,10 +6,10 @@ const {body, validationResult} = require('express-validator');
 require('dotenv').config();
 
 router.post('/register', [
-    body("name", "Name is required").notEmpty().isLength({min: 3}),
+    body("name", "Name is required and should be > 3 characters").notEmpty().isLength({min: 3}),
     body("email", "Email is required").isEmail().notEmpty(),
-    body("password", "Password is required").notEmpty().isLength({min: 8}),
-    body("age", "Age is required").notEmpty().isInt({min: 18})
+    body("password", "Password is required and should be > 8 characters").notEmpty().isLength({min: 8}),
+    body("age", "Age is required and should be greater than 18").notEmpty().isInt({min: 18})
     ], async (req, res) => {
     const errors = validationResult(req);
     let success = false;
@@ -29,6 +29,40 @@ router.post('/register', [
             password: hashedPassword,
             age: req.body.age
         });
+        const payload = {
+            user: {
+                id: user.id
+            }
+        };
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
+        success = true;
+        res.json({success,token});
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({message:"Server Error"});
+    }
+});
+
+router.post('/login', [
+        body("email", "Email is required").isEmail().notEmpty(),
+        body("password", "Password is required").notEmpty().isLength({min: 8}).exists()
+    ], async (req, res) => {
+    const errors = validationResult(req);
+    let success = false;
+    if (!errors.isEmpty()) {
+        return res.status(400).json({success,errors: errors.array()});
+    }
+    const {email, password} = req.body;
+    try {
+        let user = await userModel.findOne({email});
+        if (!user) {
+            return res.status(400).json({success,errors: "User does not exist"});
+        }
+        const passwordCompare = await bcrypt.compare(password, user.password);
+        if (!passwordCompare) {
+            return res.status(400).json({success,errors: "Invalid Credentials"});
+        }
         const payload = {
             user: {
                 id: user.id
