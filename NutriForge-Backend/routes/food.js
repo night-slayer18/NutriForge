@@ -50,4 +50,22 @@ router.post('/addfood',fetchuser,[
         res.status(500).send({success,message:"Server Error"});
     }
 })
+
+// Route 3: Search a food item by name
+
+router.get('/searchfood/:name',fetchuser, async(req,res) => {
+    let success = false;
+    try{
+        const food = await foodModel.find({ name: { $regex: new RegExp(req.params.name, 'i') } });
+        if(food.length === 0){
+            return res.status(404).send({success,message:"No food items found"});
+        }
+        success = true;
+        res.json({success,food});
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({success,message:"Server Error"});
+    }
+})
 module.exports = router;
