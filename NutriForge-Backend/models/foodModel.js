@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 const foodSchema = new Schema({
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
+    },
     name: {
         type: String,
         required: true,
