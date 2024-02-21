@@ -82,6 +82,9 @@ router.post('/login', [
 router.post('/user',fetchuser, async (req, res) => {
     try {
         const user = await userModel.findById(req.user.id).select("-password");
+        if (!user) {
+            return res.status(400).json({success,errors: "User does not exist"});
+        }
         res.json(user);
     }
     catch (error) {
