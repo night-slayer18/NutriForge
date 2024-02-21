@@ -68,4 +68,34 @@ router.get('/searchfood/:name',fetchuser, async(req,res) => {
         res.status(500).send({success,message:"Server Error"});
     }
 })
+
+// Route 4: Update a food item
+
+router.put('/updatefood/:id',fetchuser, async(req,res) => {
+    let success = false;
+    try {
+        const {name,calories,protein,carbohydrates,fat,fiber} = req.body;
+        const newFood = {};
+        if(name) newFood.name = name;
+        if(calories) newFood.calories = calories;
+        if(protein) newFood.protein = protein;
+        if(carbohydrates) newFood.carbohydrates = carbohydrates;
+        if(fat) newFood.fat = fat;
+        if(fiber) newFood.fiber = fiber;
+        let food = await foodModel.findById(req.params.id);
+        if(!food){
+            return res.status(404).send({success,message:"Food not found"});
+        }
+        if(food.user.toString() !== req.user.id){
+            return res.status(401).send({success,message:"Not allowed"});
+        }
+        food = await foodModel.findByIdAndUpdate(req.params.id,{$set:newFood},{new:true});
+        success = true;
+        res.json({success,food});
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({success,message:"Server Error"});
+    }
+});
 module.exports = router;
