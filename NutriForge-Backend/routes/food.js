@@ -110,6 +110,9 @@ router.post('/trackfood',fetchuser,async (req,res) => {
         if(!food){
             return res.status(404).send({success,message:"Food not found"});
         }
+        if(food.user.toString() !== req.user.id){
+            return res.status(401).send({success,message:"Not allowed"});
+        }
         const track = new trackModel({
             userID:req.user.id,foodID,quantity
         });
@@ -118,6 +121,23 @@ router.post('/trackfood',fetchuser,async (req,res) => {
         res.json({success,savedTrack});
     }
     catch (error) {
+        console.error(error);
+        res.status(500).send({success,message:"Server Error"});
+    }
+});
+
+// Route 6: Get all the tracked food items
+
+router.get('/gettrack/:id',fetchuser,async(req, res) => {
+    let success = false
+    try {
+        const track = await trackModel.find({userID:req.params.id});
+        if (!track) {
+            return res.status(404).send({message:"No tracked food items found"});
+        }
+        success = true;
+        res.json({success,track});
+    } catch (error) {
         console.error(error);
         res.status(500).send({success,message:"Server Error"});
     }
