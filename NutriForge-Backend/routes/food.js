@@ -128,11 +128,12 @@ router.post('/trackfood',fetchuser,async (req,res) => {
 
 // Route 6: Get all the tracked food items
 
-router.get('/gettrack/:id',fetchuser,async(req, res) => {
+router.get('/gettrack/:id/:date',fetchuser,async(req, res) => {
     let success = false
     try {
-        const track = await trackModel.find({userID:req.params.id});
-        if (!track) {
+        const date = req.params.date.replace(/-/g,'/');
+        const track = await trackModel.find({userID:req.params.id,eatenAt:date}).populate({path:'userID',select:'-password'}).populate('foodID');
+        if (track.length === 0) {
             return res.status(404).send({message:"No tracked food items found"});
         }
         success = true;
