@@ -2,6 +2,7 @@ const foodModel = require('../models/foodModel');
 const router = require('express').Router();
 const fetchuser = require('../middleware/fetchuser');
 const {body, validationResult} = require('express-validator');
+const trackModel = require('../models/trackModel')
 
 // Route 1: Get all the food items
 
@@ -92,6 +93,29 @@ router.put('/updatefood/:id',fetchuser, async(req,res) => {
         food = await foodModel.findByIdAndUpdate(req.params.id,{$set:newFood},{new:true});
         success = true;
         res.json({success,food});
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({success,message:"Server Error"});
+    }
+});
+
+// Route 5: Track a food item
+
+router.post('/trackfood',fetchuser,async (req,res) => {
+    const {foodID,quantity} = req.body;
+    let success = false;
+    try {
+        const food = await foodModel.findById(foodID);
+        if(!food){
+            return res.status(404).send({success,message:"Food not found"});
+        }
+        const track = new trackModel({
+            userID:req.user.id,foodID,quantity
+        });
+        const savedTrack = await track.save();
+        success = true;
+        res.json({success,savedTrack});
     }
     catch (error) {
         console.error(error);
