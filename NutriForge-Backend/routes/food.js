@@ -1,16 +1,16 @@
 const foodModel = require('../models/foodModel');
 const router = require('express').Router();
-const fetchuser = require('../middleware/fetchuser');
+const verifyToken = require('../middleware/verifyToken');
 const {body, validationResult} = require('express-validator');
 const trackModel = require('../models/trackModel')
 
 // Route 1: Get all the food items
 
-router.get('/getfood', async (req, res) => {
+router.get('/getfood',verifyToken, async (req, res) => {
     let success = false;
     try {
         const food = await foodModel.find();
-        if (!food) {
+        if (food.length === 0) {
             return res.status(404).send({message:"No food items found"});
         }
         success = true;
@@ -24,7 +24,7 @@ router.get('/getfood', async (req, res) => {
 
 // Route 2: Add a new food item
 
-router.post('/addfood',fetchuser,[
+router.post('/addfood',verifyToken,[
     body('name','Enter a valid name').isLength({min:3}),
     body('calories','Enter a valid number').isNumeric(),
     body('protein','Enter a valid number').isNumeric(),
@@ -54,7 +54,7 @@ router.post('/addfood',fetchuser,[
 
 // Route 3: Search a food item by name
 
-router.get('/searchfood/:name',fetchuser, async(req,res) => {
+router.get('/searchfood/:name',verifyToken, async(req,res) => {
     let success = false;
     try{
         const food = await foodModel.find({ name: { $regex: new RegExp(req.params.name, 'i') } });
@@ -72,7 +72,7 @@ router.get('/searchfood/:name',fetchuser, async(req,res) => {
 
 // Route 4: Update a food item
 
-router.put('/updatefood/:id',fetchuser, async(req,res) => {
+router.put('/updatefood/:id',verifyToken, async(req,res) => {
     let success = false;
     try {
         const {name,calories,protein,carbohydrates,fat,fiber} = req.body;
@@ -102,7 +102,7 @@ router.put('/updatefood/:id',fetchuser, async(req,res) => {
 
 // Route 5: Track a food item
 
-router.post('/trackfood',fetchuser,async (req,res) => {
+router.post('/trackfood',verifyToken,async (req,res) => {
     const {foodID,quantity} = req.body;
     let success = false;
     try {
@@ -128,7 +128,7 @@ router.post('/trackfood',fetchuser,async (req,res) => {
 
 // Route 6: Get all the tracked food items
 
-router.get('/gettrack/:id/:date',fetchuser,async(req, res) => {
+router.get('/gettrack/:id/:date',verifyToken,async(req, res) => {
     let success = false
     try {
         const date = req.params.date.replace(/-/g,'/');

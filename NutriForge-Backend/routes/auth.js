@@ -3,7 +3,7 @@ const userModel = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {body, validationResult} = require('express-validator');
-const fetchuser = require('../middleware/fetchuser');
+const verifyToken = require('../middleware/verifyToken');
 require('dotenv').config();
 
 router.post('/register', [
@@ -79,13 +79,15 @@ router.post('/login', [
     }
 });
 
-router.post('/user',fetchuser, async (req, res) => {
+router.post('/user',verifyToken, async (req, res) => {
+    let success = false;
     try {
         const user = await userModel.findById(req.user.id).select("-password");
         if (!user) {
             return res.status(400).json({success,errors: "User does not exist"});
         }
-        res.json(user);
+        success = true;
+        res.json({success,user});
     }
     catch (error) {
         console.error(error);
@@ -93,7 +95,7 @@ router.post('/user',fetchuser, async (req, res) => {
     }
 });
 
-router.post('/update',fetchuser,[
+router.post('/update',verifyToken,[
     body("name", "Name is required and should be > 3 characters").isLength({min: 3}),
     body("age", "Age is required and should be greater than 18").notEmpty().isInt({min: 18})
 ], async(req,res) => {
@@ -125,7 +127,7 @@ router.post('/update',fetchuser,[
     }
 })
 
-router.post('/delete',fetchuser, async(req,res) => {
+router.post('/delete',verifyToken, async(req,res) => {
     let success = false;
     try {
         let user = await userModel.findById(req.user.id);
@@ -148,7 +150,7 @@ router.post('/delete',fetchuser, async(req,res) => {
     }
 })
 
-router.post('/updatepassword',fetchuser,async (req,res) => {
+router.post('/updatepassword',verifyToken,async (req,res) => {
     let success = false;
     try {
         let user = await userModel.findById(req.user.id);
