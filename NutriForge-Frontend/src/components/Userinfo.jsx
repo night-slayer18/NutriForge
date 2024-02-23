@@ -1,27 +1,17 @@
 import { Card, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import AuthContext from '../context/auth/AuthContext';
 
 const Userinfo = () => {
     const [password, setPassword] = useState({ opassword: '', npassword: '' })
     const ref = useRef(null);
     const closeref = useRef(null);
+    const context = useContext(AuthContext);
+    const { fetchUser } = context;
     useEffect(() => {
-        const fetchUser = async () => {
-            const response = await fetch('http://localhost:8000/api/auth/user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'auth-token': localStorage.getItem('token')
-                }
-            })
-            const data = await response.json();
-            localStorage.setItem('name', data.user.name)
-            localStorage.setItem('email', data.user.email)
-            localStorage.setItem('USER', data.user._id)
-        }
         fetchUser();
-    }, [])
+        // eslint-disable-next-line
+    },[])
 
     const onChange = (e)=>{
         setPassword({...password, [e.target.name]:e.target.value})
@@ -70,11 +60,11 @@ const Userinfo = () => {
                         <div className="modal-body">
                             <form>
                                 <div className="mb-3">
-                                    <label htmlFor="opass" className="form-label">Old Password</label>
+                                    <label htmlFor="opassword" className="form-label">Old Password</label>
                                     <input onChange={onChange} value={password.opassword} type="password" name='opassword' className="form-control" id="opassword" aria-describedby="Old Password" required minLength={8} />
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="npass" className="form-label">New Password</label>
+                                    <label htmlFor="npassword" className="form-label">New Password</label>
                                     <input onChange={onChange} value={password.npassword} type="password" name='npassword' className="form-control" id="npassword" aria-describedby="New Password" required minLength={8}/>
                                 </div>
                             </form>

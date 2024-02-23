@@ -1,8 +1,11 @@
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import AuthContext from "../context/auth/AuthContext";
 
 const Home = () => {
   const navigate = useNavigate();
+  const context = useContext(AuthContext);
+  const { userDetails } = context;
   useEffect(() =>{
     if(!localStorage.getItem("token")){
       navigate("/login");
@@ -11,7 +14,7 @@ const Home = () => {
   },[])
   return (
     <div>
-      Home Component
+      {userDetails.name} is logged in
     </div>
   )
 }
