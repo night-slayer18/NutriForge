@@ -4,10 +4,11 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import Navbar from './components/Navbar'
 import Register from './components/Register'
 import Login from './components/Login'
 import Home from './components/Home'
+import NotFound from './components/NotFound'
+import Layout from './components/Layout'
 
 
 function App() {
@@ -15,11 +16,11 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar/>
         <Routes>
-          <Route exact path="/" element={<Home/>} />
-          <Route exact path="/register" element= {<Register/>} />
-          <Route exact path="/login" element={<Login/>} />
+          <Route exact path="/" element={<Layout><Home/></Layout>} />
+          <Route exact path="/register" element= {<Layout><Register/></Layout>} />
+          <Route exact path="/login" element={<Layout><Login/></Layout>} />
+          <Route exact path="*" element={<NotFound/>} />
         </Routes>
       </BrowserRouter>
     </>
