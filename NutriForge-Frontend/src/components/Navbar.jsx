@@ -39,12 +39,12 @@ const Navbar = () => {
             <Link className="btn btn-primary mx-2 my-2" to="/register" role="button">
               Signup
             </Link>
-          </div>:<div className="d-flex align-items-center">
-            {/* <Link to="/user" className="btn btn-primary rounded-circle mx-2 my-2" style={{ width: '40px', height: '40px' }}>
+          </div>:<div className="d-flex align-items-center justify-content-center ">
+            <Link to="/user" className="d-flex justify-content-center align-items-center btn btn-primary rounded-circle mx-2 my-2" style={{ width: '40px', height: '40px' }}>
               <i className="bi bi-person-fill" ></i>
-            </Link> */}
+            </Link>
             <button onClick={handleLogout} className="btn btn-danger mx-2 my-2">
-              Logout
+              <i className="bi bi-box-arrow-left"></i> Logout
             </button>
             </div>}
         </div>

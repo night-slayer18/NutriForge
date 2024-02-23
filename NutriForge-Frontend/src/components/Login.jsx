@@ -27,12 +27,12 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email" className="col-form-label">Email:</label>
-            <input onChange={onChange} name="email" type="email" className="form-control" id="email" placeholder="Enter your email" aria-describedby="email" required />
+            <input onChange={onChange} name="email" type="email" className="form-control" id="email" placeholder="Enter your email" aria-describedby="email" required value={credentials.email} />
           </div>
           <div className="form-group">
             <label htmlFor="password" className="col-form-label">Password:</label>
             <div className="input-group">
-              <input onChange={onChange} name="password" type={togglePassword ? "text" : "password"} className="form-control" id="password" placeholder="Enter your password" aria-describedby="password" required minLength={8} />
+              <input onChange={onChange} name="password" type={togglePassword ? "text" : "password"} className="form-control" id="password" placeholder="Enter your password" aria-describedby="password" required minLength={8} value={credentials.password}/>
               <div className="input-group-append">
                 <span className="input-group-text" onClick={() => setTogglePassword(!togglePassword)} style={{ cursor: "pointer" }}>
                   <i className={`bi ${togglePassword ? "bi-eye-slash" : "bi-eye"}`}></i>

@@ -52,16 +52,16 @@ const Register = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name" className="col-form-label">Name:</label>
-            <input onChange={onChange} name="name" type="text" className="form-control" id="name" placeholder="Enter your name" aria-describedby="name" required minLength={3} maxLength={20}/>
+            <input onChange={onChange} name="name" type="text" className="form-control" id="name" placeholder="Enter your name" aria-describedby="name" required minLength={3} maxLength={20} value={credentials.name}/>
           </div>
           <div className="form-group">
             <label htmlFor="email" className="col-form-label">Email:</label>
-            <input onChange={onChange} name="email" type="email" className="form-control" id="email" placeholder="Enter your email" aria-describedby="email" required />
+            <input onChange={onChange} name="email" type="email" className="form-control" id="email" placeholder="Enter your email" aria-describedby="email" required value={credentials.email} />
           </div>
           <div className="form-group">
             <label htmlFor="password" className="col-form-label">Password:</label>
             <div className="input-group">
-              <input onChange={onChange} name="password" type={showPassword ? "text" : "password"} className="form-control" id="password" placeholder="Enter your password" aria-describedby="password" required minLength={8}/>
+              <input onChange={onChange} name="password" type={showPassword ? "text" : "password"} className="form-control" id="password" placeholder="Enter your password" aria-describedby="password" required minLength={8} value={credentials.password}/>
               <div className="input-group-append">
                 <span className="input-group-text" onClick={toggleShowPassword} style={{ cursor: "pointer" }}><i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i></span>
               </div>
@@ -70,7 +70,7 @@ const Register = () => {
           <div className="form-group">
             <label htmlFor="confirmPassword" className="col-form-label">Confirm Password:</label>
             <div className="input-group">
-              <input onChange={onChange} name="confirmpassword" type={showConfirmPassword ? "text" : "password"} className="form-control" id="confirmPassword" placeholder="Confirm your password" aria-describedby="confirm password" required minLength={8}/>
+              <input onChange={onChange} name="confirmpassword" type={showConfirmPassword ? "text" : "password"} className="form-control" id="confirmPassword" placeholder="Confirm your password" aria-describedby="confirm password" required minLength={8} value={credentials.confirmpassword}/>
               <div className="input-group-append">
                 <span className="input-group-text" onClick={toggleShowConfirmPassword} style={{ cursor: "pointer" }}><i className={`bi ${showConfirmPassword ? "bi-eye-slash" : "bi-eye"}`}></i></span>
               </div>
@@ -78,11 +78,11 @@ const Register = () => {
           </div>
           <div className="form-group">
             <label htmlFor="phoneNumber" className="col-form-label">Phone Number:</label>
-            <input onChange={onChange} name="phoneNumber" type="tel" className="form-control" id="phoneNumber" placeholder="Enter your phone number" aria-describedby="age" required/>
+            <input onChange={onChange} name="phoneNumber" type="tel" className="form-control" id="phoneNumber" placeholder="Enter your phone number" aria-describedby="age" required value={credentials.phoneNumber}/>
           </div>
           <div className="form-group">
             <label htmlFor="age" className="col-form-label">Age:</label>
-            <input onChange={onChange} name="age" type="number" className="form-control" id="age" placeholder="Enter your age" required />
+            <input onChange={onChange} name="age" type="number" className="form-control" id="age" placeholder="Enter your age" required max={100} min={18} value={credentials.age}/>
           </div>
           <div className="text-center mt-3">
             <button type="submit" className="btn btn-primary">Sign Up</button>
