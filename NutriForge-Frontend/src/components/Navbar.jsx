@@ -1,10 +1,18 @@
+import { useContext } from "react";
 import { Link,useLocation, useNavigate } from "react-router-dom";
+import AuthContext from "../context/auth/AuthContext";
 
 const Navbar = () => {
   let location = useLocation();
   let history = useNavigate();
+  const context = useContext(AuthContext);
+  const { setUserDetails } = context;
   const handleLogout=()=>{
     localStorage.removeItem('token');
+    localStorage.removeItem('name');
+    localStorage.removeItem('email');
+    localStorage.removeItem('USER');
+    setUserDetails({name: '', email: '', id: '', token: ''});
     history('/login');
   }
   return (
