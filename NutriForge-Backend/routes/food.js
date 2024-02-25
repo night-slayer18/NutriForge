@@ -11,7 +11,7 @@ router.get('/getfood',verifyToken, async (req, res) => {
     try {
         const food = await foodModel.find();
         if (food.length === 0) {
-            return res.status(404).send({message:"No food items found"});
+            return res.status(404).send({food,message:"No food items found"});
         }
         success = true;
         res.json({success,food});
@@ -59,7 +59,7 @@ router.get('/searchfood/:name',verifyToken, async(req,res) => {
     try{
         const food = await foodModel.find({ name: { $regex: new RegExp(req.params.name, 'i') } });
         if(food.length === 0){
-            return res.status(404).send({success,message:"No food items found"});
+            return res.status(404).send({food,success,message:"No food items found"});
         }
         success = true;
         res.json({success,food});
@@ -134,7 +134,7 @@ router.get('/gettrack/:id/:date',verifyToken,async(req, res) => {
         const date = req.params.date.replace(/-/g,'/');
         const track = await trackModel.find({userID:req.params.id,eatenAt:date}).populate({path:'userID',select:'-password'}).populate('foodID');
         if (track.length === 0) {
-            return res.status(404).send({message:"No tracked food items found"});
+            return res.status(404).send({food,message:"No tracked food items found"});
         }
         success = true;
         res.json({success,track});
