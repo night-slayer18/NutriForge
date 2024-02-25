@@ -1,6 +1,13 @@
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import FoodContext from '../context/food/FoodContext';
 
 const FoodItems = (props) => {
+    const foodcontext = useContext(FoodContext);
+    const { deleteFood } = foodcontext;
+    const handleClick = () => {
+        deleteFood(props.food._id);
+    }
     return (
         <div className="col-md-4">
             <div className="card my-3 mx-3 shadow">
@@ -14,7 +21,7 @@ const FoodItems = (props) => {
                         <li className="list-group-item">Fiber: {props.food.fiber}</li>
                     </ul>
                     <div className="d-flex justify-content-around">
-                        <button className="btn btn-danger">Delete <i className="bi bi-x-octagon"></i></button>
+                        <button onClick={handleClick} className="btn btn-danger">Delete <i className="bi bi-x-octagon"></i></button>
                         <button className="btn btn-success">Edit <i className="bi bi-pencil-square"></i></button>
                     </div>
                 </div>
@@ -25,6 +32,7 @@ const FoodItems = (props) => {
 
 FoodItems.propTypes = {
     food: PropTypes.shape({
+        _id: PropTypes.string, 
         name: PropTypes.string,
         calories: PropTypes.number,
         fat: PropTypes.number,

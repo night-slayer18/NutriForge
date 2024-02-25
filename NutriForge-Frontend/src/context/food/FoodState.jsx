@@ -70,8 +70,19 @@ const FoodState = (props) => {
         }
         setFoods(newFoods)
     }
+
+    const deleteFood = async (id) => {
+        const response = await fetch(`${host}/api/food/deletefood/${id}`,{
+            method: "DELETE",
+        })
+        const json = await response.json()
+        console.log(json.food)
+        console.log("deleted a food item" + id)
+        const newFoods = foods.filter((food) => {return food._id !== id})
+        setFoods(newFoods)
+    }
     return (
-        <FoodContext.Provider value={{foods,getFoods,addFood,searchFoodByName,updateFood}}>
+        <FoodContext.Provider value={{foods,getFoods,addFood,searchFoodByName,updateFood,deleteFood}}>
                 {props.children}
         </FoodContext.Provider>
     )
