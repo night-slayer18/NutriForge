@@ -146,15 +146,12 @@ router.get('/gettrack/:id/:date',verifyToken,async(req, res) => {
 
 // Route 7: Delete a food item
 
-router.delete('/deletefood/:id',verifyToken, async(req,res) => {
+router.delete('/deletefood/:id', async(req,res) => {
     let success = false;
     try {
         let food = await foodModel.findById(req.params.id);
         if(!food){
             return res.status(404).send({success,message:"Food not found"});
-        }
-        if(food.user.toString() !== req.user.id){
-            return res.status(401).send({success,message:"Not allowed"});
         }
         food = await foodModel.findByIdAndDelete(req.params.id);
         success = true;
