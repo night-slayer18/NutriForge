@@ -14,6 +14,7 @@ import AuthState from './context/auth/AuthState'
 import PrivateRoute from './components/PrivateRoute'
 import Foods from './components/Foods'
 import FoodState from './context/food/FoodState'
+import AddFoodes from './components/AddFoodes'
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
               <Route exact path="/user" element={<PrivateRoute Component={<Layout><Userinfo/></Layout>}/>} />
               <Route exact path="/foods" element = {<PrivateRoute Component={<Layout><Foods/></Layout>}/>} />
               <Route exact path="*" element={<NotFound/>} />
+              <Route exact path="/addfood" element = {<PrivateRoute Component={<Layout><AddFoodes/></Layout>}/>}/>
             </Routes>
           </BrowserRouter>
         </FoodState>

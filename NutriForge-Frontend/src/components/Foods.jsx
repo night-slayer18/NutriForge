@@ -12,6 +12,7 @@ const Foods = () => {
         // eslint-disable-next-line
     }, [])
     return (
+        <>
         <div className="row my-3">
           <div className="container mx-2">
           {foods.length===0 && "No foods to display"}
@@ -22,6 +23,7 @@ const Foods = () => {
                 )
           })}
     </div>
+    </>
     )
 }
 
