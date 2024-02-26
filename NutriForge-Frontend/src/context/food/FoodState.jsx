@@ -5,7 +5,12 @@ import { useState } from 'react';
 const FoodState = (props) => {
     const host = "http://localhost:8000";
     const foodInitial = []
+    const trackInitial = []
+    const trackFoodByDateInitial = []
     const [foods,setFoods] = useState(foodInitial)
+    const [trackfood,settrackFood] = useState(trackInitial)
+    const [trackFoodByDate,settrackFoodByDate] = useState(trackFoodByDateInitial)
+
 
     const getFoods = async () => {
         const reponse = await fetch(`${host}/api/food/getfood`,{
@@ -81,8 +86,35 @@ const FoodState = (props) => {
         const newFoods = foods.filter((food) => {return food._id !== id})
         setFoods(newFoods)
     }
+
+    const trackFood = async(foodID,quantity) => {
+        const response = await fetch(`${host}/api/food/trackfood`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": localStorage.getItem("token")
+            },
+            body: JSON.stringify({foodID,quantity})
+        })
+        const json = await response.json()
+        console.log(json)
+        settrackFood(trackfood.concat(json.savedTrack))
+    }
+
+    const trackFoodDate = async(foodID,date) => {
+        const response = await fetch(`${host}/api/food/gettrack/${foodID}/${date}`,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": localStorage.getItem("token")
+            }
+        })
+        const json = await response.json()
+        settrackFoodByDate(json.track)
+    }
+
     return (
-        <FoodContext.Provider value={{foods,getFoods,addFood,searchFoodByName,updateFood,deleteFood}}>
+        <FoodContext.Provider value={{foods,getFoods,addFood,searchFoodByName,updateFood,deleteFood,trackFood,trackFoodByDate,trackFoodDate}}>
                 {props.children}
         </FoodContext.Provider>
     )
