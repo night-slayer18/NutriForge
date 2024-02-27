@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import FoodContext from "../context/food/FoodContext";
+import TrackedFood from "./TrackedFood";
 
 const Track = () => {
     const [track, setTrack] = useState('')
@@ -12,6 +13,7 @@ const Track = () => {
         setTrack(e.target.value)
     }
     return (
+        <>
         <div className="container mt-4">
             <h2 className="text-center mb-4">Track Food</h2>
             <div className="input-group">
@@ -41,6 +43,8 @@ const Track = () => {
                 </div>
             )}
         </div>
+        <TrackedFood/>
+        </>
     );
 }
 
