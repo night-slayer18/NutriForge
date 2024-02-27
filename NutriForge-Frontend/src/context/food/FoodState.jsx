@@ -7,9 +7,11 @@ const FoodState = (props) => {
     const foodInitial = []
     const trackInitial = []
     const trackFoodByDateInitial = []
+    const searchFoodInitial = []
     const [foods,setFoods] = useState(foodInitial)
     const [trackfood,settrackFood] = useState(trackInitial)
     const [trackFoodByDate,settrackFoodByDate] = useState(trackFoodByDateInitial)
+    const [searchFood,setSearchFood] = useState(searchFoodInitial)
 
 
     const getFoods = async () => {
@@ -46,7 +48,7 @@ const FoodState = (props) => {
             }
         })
         const json = await response.json()
-        setFoods(json.food)
+        setSearchFood(json.food)
     }
 
     const updateFood = async (id,name,calories,protein,carbohydrates,fat,fiber) => {
@@ -101,8 +103,8 @@ const FoodState = (props) => {
         settrackFood(trackfood.concat(json.savedTrack))
     }
 
-    const trackFoodDate = async(foodID,date) => {
-        const response = await fetch(`${host}/api/food/gettrack/${foodID}/${date}`,{
+    const trackFoodDate = async(date) => {
+        const response = await fetch(`${host}/api/food/gettrack/${localStorage.getItem('USER')}/${date}`,{
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -114,7 +116,7 @@ const FoodState = (props) => {
     }
 
     return (
-        <FoodContext.Provider value={{foods,getFoods,addFood,searchFoodByName,updateFood,deleteFood,trackFood,trackFoodByDate,trackFoodDate}}>
+        <FoodContext.Provider value={{foods,getFoods,addFood,searchFoodByName,updateFood,deleteFood,trackFood,trackFoodByDate,trackFoodDate,searchFood,setSearchFood}}>
                 {props.children}
         </FoodContext.Provider>
     )

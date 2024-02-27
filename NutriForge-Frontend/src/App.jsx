@@ -15,6 +15,7 @@ import PrivateRoute from './components/PrivateRoute'
 import Foods from './components/Foods'
 import FoodState from './context/food/FoodState'
 import AddFoodes from './components/AddFoodes'
+import Track from './components/Track'
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
               <Route exact path="/foods" element = {<PrivateRoute Component={<Layout><Foods/></Layout>}/>} />
               <Route exact path="*" element={<NotFound/>} />
               <Route exact path="/addfood" element = {<PrivateRoute Component={<Layout><AddFoodes/></Layout>}/>}/>
+              <Route exact path="/track" element = {<PrivateRoute Component={<Layout><Track/></Layout>}/>}/>
             </Routes>
           </BrowserRouter>
         </FoodState>

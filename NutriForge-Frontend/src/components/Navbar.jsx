@@ -44,6 +44,11 @@ const Navbar = () => {
                 Add Food
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className={`nav-link ${location.pathname==="/"?"active":""}`} aria-current="page" to="/track">
+                Track Food
+              </Link>
+            </li>
           </ul>
           {!localStorage.getItem('token')?<div className="d-flex">
             <Link className="btn btn-success mx-2 my-2" to="/login" role="button">
