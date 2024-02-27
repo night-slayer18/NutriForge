@@ -134,7 +134,7 @@ router.get('/gettrack/:id/:date',verifyToken,async(req, res) => {
         const date = req.params.date.replace(/-/g,'/');
         const track = await trackModel.find({userID:req.params.id,eatenAt:date}).populate({path:'userID',select:'-password'}).populate('foodID');
         if (track.length === 0) {
-            return res.status(404).send({food,message:"No tracked food items found"});
+            return res.status(404).send({track,message:"No tracked food items found"});
         }
         success = true;
         res.json({success,track});
