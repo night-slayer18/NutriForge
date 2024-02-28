@@ -154,6 +154,7 @@ router.delete('/deletefood/:id', async(req,res) => {
             return res.status(404).send({success,message:"Food not found"});
         }
         food = await foodModel.findByIdAndDelete(req.params.id);
+        await trackModel.deleteMany({foodID: req.params.id });
         success = true;
         res.json({success,food});
     }
