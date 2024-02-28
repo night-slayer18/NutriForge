@@ -1,6 +1,14 @@
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import ToastContext from "../context/toast/ToastContext";
 
 const NotFound = () => {
+    const toastcontext = useContext(ToastContext)
+    const {notFound} = toastcontext
+    useEffect(() => {
+        notFound();
+        // eslint-disable-next-line
+    }, []);
     return (
       <div className="d-flex justify-content-center align-items-center vh-100 ">
         <div className="text-center">

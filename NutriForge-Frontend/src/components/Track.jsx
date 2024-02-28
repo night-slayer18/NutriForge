@@ -1,11 +1,14 @@
 import { useContext, useState } from "react";
 import FoodContext from "../context/food/FoodContext";
 import TrackedFood from "./TrackedFood";
+import ToastContext from "../context/toast/ToastContext";
 
 const Track = () => {
     const [track, setTrack] = useState('')
     const foodcontext = useContext(FoodContext)
     const { searchFoodByName, searchFood, trackFood } = foodcontext
+    const toastcontext = useContext(ToastContext)
+    const { trackFoodSuccess } = toastcontext
     const handleSearch = () => {
         searchFoodByName(track)
     }
@@ -34,7 +37,7 @@ const Track = () => {
                                     <p className="card-text">Carbs: {food.carbohydrates}</p>
                                     <p className="card-text">Fat: {food.fat}</p>
                                     <div className="text-center mt-3">
-                                        <button onClick={()=>{trackFood(food._id,5)}} className="btn btn-primary">Track</button>
+                                        <button onClick={()=>{trackFood(food._id,5);trackFoodSuccess()}} className="btn btn-primary">Track</button>
                                     </div>
                                 </div>
                             </div>

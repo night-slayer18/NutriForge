@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import FoodContext from '../context/food/FoodContext';
+import ToastContext from '../context/toast/ToastContext';
 
 const FoodItems = (props) => {
     const foodcontext = useContext(FoodContext);
+    const toastcontext = useContext(ToastContext)
+    const {deleteFoodSuccess} = toastcontext;
     const { deleteFood } = foodcontext;
     const handleClick = () => {
         deleteFood(props.food._id);
+        deleteFoodSuccess();
     }
     return (
         <div className="col-md-4">

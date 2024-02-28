@@ -1,8 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import FoodContext from "../context/food/FoodContext"
 import FoodItems from "./FoodItems"
+import ToastContext from "../context/toast/ToastContext"
 const Foods = () => {
     const foodcontext = useContext(FoodContext)
+    const toastcontext = useContext(ToastContext)
+    const { updateFoodSuccess } = toastcontext
     const { foods, getFoods,updateFood } = foodcontext
     const [foodDetails, setFoodDetails] = useState({id: '', name: '', protein: '', fat: '', carbohydrates: '', calories: '',fiber: ''})
     const ref = useRef()
@@ -25,6 +28,7 @@ const Foods = () => {
     const handleClick = (e) => {
         e.preventDefault()
         updateFood(foodDetails.id, foodDetails.name, foodDetails.calories, foodDetails.protein, foodDetails.carbohydrates, foodDetails.fat, foodDetails.fiber)
+        updateFoodSuccess()
         refClose.current.click()
     }
     return (

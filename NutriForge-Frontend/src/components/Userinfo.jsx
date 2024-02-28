@@ -1,6 +1,7 @@
 import { Card, Button } from 'react-bootstrap';
 import { useContext, useEffect, useRef, useState } from 'react';
 import AuthContext from '../context/auth/AuthContext';
+import ToastContext from '../context/toast/ToastContext';
 
 const Userinfo = () => {
     const [password, setPassword] = useState({ opassword: '', npassword: '' })
@@ -8,6 +9,8 @@ const Userinfo = () => {
     const closeref = useRef(null);
     const context = useContext(AuthContext);
     const { fetchUser } = context;
+    const toastcontext = useContext(ToastContext)
+    const { updatePasswordSuccess, updatePasswordFail } = toastcontext
     useEffect(() => {
         fetchUser();
         // eslint-disable-next-line
@@ -37,11 +40,11 @@ const Userinfo = () => {
         const data = await response.json();
         if(data.success){
             closeref.current.click();
-            alert('Password Updated Successfully')
+            updatePasswordSuccess()
             setPassword({opassword: '', npassword: ''})
         }
         else{
-            alert(data.errors)
+            updatePasswordFail()
         }
     }
 

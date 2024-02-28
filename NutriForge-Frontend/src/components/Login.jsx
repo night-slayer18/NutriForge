@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ToastContext from "../context/toast/ToastContext";
 
 const Login = () => {
+  const toastcontext = useContext(ToastContext)
+  const {loginSuccess,loginFail} = toastcontext
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [togglePassword, setTogglePassword] = useState(false);
   const history = useNavigate();
@@ -16,8 +19,8 @@ const Login = () => {
       body: JSON.stringify({ email: credentials.email, password: credentials.password }),
     });
     const data = await response.json();
-    if (data.success) { console.log("Logged in successfully"); localStorage.setItem("token", data.token); history("/"); }
-    else console.log("Error logging in");
+    if (data.success) { console.log("Logged in successfully"); localStorage.setItem("token", data.token); history("/"); loginSuccess(); }
+    else {console.log("Error logging in"); loginFail();}
   };
 
   return (

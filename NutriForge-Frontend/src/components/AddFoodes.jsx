@@ -1,12 +1,15 @@
 import { useContext, useState, } from "react"
 import FoodContext from "../context/food/FoodContext"
 import { useNavigate } from "react-router-dom"
+import ToastContext from "../context/toast/ToastContext"
 
 const AddFoodes = () => {
     const [foodData, setfoodData] = useState({name: '',carbohydrates: '',protein: '',fat: '',fiber: '',calories: ''})
     const navigate = useNavigate()
     const foodcontext = useContext(FoodContext)
     const {addFood} = foodcontext
+    const toastcontext = useContext(ToastContext)
+    const {addFoodSuccess} = toastcontext
     const handleChange = (e) => {
         setfoodData({...foodData,[e.target.name]: e.target.value})
         console.log(foodData)
@@ -16,6 +19,7 @@ const AddFoodes = () => {
         e.preventDefault()
         addFood(foodData.name,foodData.carbohydrates,foodData.protein,foodData.fat,foodData.fiber,foodData.calories)
         setfoodData({name: '',carbohydrates: '',protein: '',fat: '',fiber: '',calories: ''})
+        addFoodSuccess()
         navigate('/foods')
     }
     return (

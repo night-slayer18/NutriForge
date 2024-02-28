@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ToastContext from "../context/toast/ToastContext";
 
 const Register = () => {
   const [credentials, setCredentials] = useState({ name: "", email: "", password: "", confirmpassword: "", phoneNumber: "", age: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const history = useNavigate();
+  const toastcontext = useContext(ToastContext)
+  const {registerSuccess,registerFail} = toastcontext
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -40,8 +43,10 @@ const Register = () => {
     const json = await response.json();
     if (json.success) {
       history("/login");
+      registerSuccess();
     } else {
       console.log("Invalid credentials");
+      registerFail();
     }
   };
 

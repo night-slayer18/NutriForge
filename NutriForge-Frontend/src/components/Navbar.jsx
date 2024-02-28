@@ -1,11 +1,14 @@
 import { useContext } from "react";
 import { Link,useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../context/auth/AuthContext";
+import ToastContext from "../context/toast/ToastContext";
 
 const Navbar = () => {
   let location = useLocation();
   let history = useNavigate();
   const context = useContext(AuthContext);
+  const toastcontext = useContext(ToastContext)
+  const {logoutSuccess} = toastcontext
   const { setUserDetails } = context;
   const handleLogout=()=>{
     localStorage.removeItem('token');
@@ -13,6 +16,7 @@ const Navbar = () => {
     localStorage.removeItem('email');
     localStorage.removeItem('USER');
     setUserDetails({name: '', email: '', id: '', token: ''});
+    logoutSuccess();
     history('/login');
   }
   return (

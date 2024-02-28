@@ -16,12 +16,16 @@ import Foods from './components/Foods'
 import FoodState from './context/food/FoodState'
 import AddFoodes from './components/AddFoodes'
 import Track from './components/Track'
+import ToastState from './context/toast/ToastState'
+import { Toaster } from 'react-hot-toast';
 
 
 function App() {
 
   return (
     <>
+    <ToastState>
+      <Toaster/>
       <AuthState>
         <FoodState>
           <BrowserRouter>
@@ -38,6 +42,7 @@ function App() {
           </BrowserRouter>
         </FoodState>
       </AuthState>
+      </ToastState>
     </>
   )
 }
