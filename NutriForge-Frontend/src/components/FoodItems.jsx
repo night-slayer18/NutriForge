@@ -22,7 +22,7 @@ const FoodItems = (props) => {
                     </ul>
                     <div className="d-flex justify-content-around">
                         <button onClick={handleClick} className="btn btn-danger">Delete <i className="bi bi-x-octagon"></i></button>
-                        <button className="btn btn-success">Edit <i className="bi bi-pencil-square"></i></button>
+                        <button onClick={()=>{props.foodUpdate(props.food)}} className="btn btn-success">Edit <i className="bi bi-pencil-square"></i></button>
                     </div>
                 </div>
             </div>
@@ -40,6 +40,7 @@ FoodItems.propTypes = {
         carbohydrates: PropTypes.number,
         fiber: PropTypes.number,
     }).isRequired,
+    foodUpdate: PropTypes.func.isRequired
 };
 
 
