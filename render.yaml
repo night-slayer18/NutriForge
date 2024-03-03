@@ -1,0 +1,4 @@
+services:
+  - name: NutriForge-Backend
+    type: web
+    buildCommand: npm install && npm run dev
