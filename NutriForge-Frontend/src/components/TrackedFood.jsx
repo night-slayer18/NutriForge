@@ -3,8 +3,9 @@ import FoodContext from '../context/food/FoodContext';
 
 const TrackedFood = () => {
     const [selectedDate, setSelectedDate] = useState('');
-    const foodcontext = useContext(FoodContext)
-    const { trackFoodByDate, trackFoodDate } = foodcontext
+    const foodcontext = useContext(FoodContext);
+    const { trackFoodByDate, trackFoodDate } = foodcontext;
+
     const handleDateChange = (event) => {
         const selectedDate = event.target.value;
         const formattedDate = formatDate(selectedDate);
@@ -22,20 +23,26 @@ const TrackedFood = () => {
     };
 
     return (
-        <div>
-            <label htmlFor="datePicker">Select Date:</label>
-            <input
-                type="date"
-                id="datePicker"
-                value={selectedDate}
-                onChange={handleDateChange}
-            />
-            <p>Selected Date: {selectedDate}</p>
-            {trackFoodByDate.length === 0 ? <h1>No Food Tracked for this date</h1> :
-            <div>
-                <h1>Tracked Food</h1>
-                <table className="table">
-                    <thead>
+        <div className="container mt-5">
+            <h1 className="text-center mb-4">Tracked Food</h1>
+            <div className="row">
+                <div className="col-md-6 offset-md-3">
+                    <label htmlFor="datePicker">Select Date:</label>
+                    <input
+                        type="date"
+                        id="datePicker"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        className="form-control mb-3"
+                    />
+                    {selectedDate && <p className="mb-3">Selected Date: {selectedDate}</p>}
+                </div>
+            </div>
+            {trackFoodByDate.length === 0 ? (
+                <h4 className="text-center mt-4">No Food Tracked for this date</h4>
+            ) : (
+                <table className="table table-striped">
+                    <thead className="thead-dark">
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Calories</th>
@@ -58,8 +65,7 @@ const TrackedFood = () => {
                         ))}
                     </tbody>
                 </table>
-            </div>
-            }
+            )}
         </div>
     );
 };
